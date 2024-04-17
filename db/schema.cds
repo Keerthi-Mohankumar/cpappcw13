@@ -9,6 +9,13 @@ using { managed } from '@sap/cds/common';
     miti        : Association to Mitigations;
     impact      : Integer;
     criticality : Integer;
+    supplier    : Association to Suppliers;
+    status      : Association to StatusValues;
+  }
+  @cds.autoexpose
+  entity StatusValues {
+    key value:String;
+    criticality: Integer;
   }
 
   entity Mitigations : managed {
@@ -18,3 +25,10 @@ using { managed } from '@sap/cds/common';
     timeline     : String;
     risks        : Association to many Risks on risks.miti = $self;
   }
+ using {  API_BUSINESS_PARTNER as bupa } from '../srv/external/API_BUSINESS_PARTNER';
+
+    entity Suppliers as projection on bupa.A_BusinessPartner {
+        key BusinessPartner as ID,
+        BusinessPartnerFullName as fullName,
+        BusinessPartnerIsBlocked as isBlocked,
+}
